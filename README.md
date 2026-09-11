@@ -152,6 +152,8 @@ Aprire `qgis/allevamenti.qgs`, in EPSG:3035. Il progetto contiene 19 layer organ
 
 Tutti i 15 layer vettoriali spaziali caricati hanno un `.qml` in `styles/vectors/`; le due tabelle senza geometria non richiedono simbologia. I raster KDE hanno stili confrontabili in `styles/rasters/`, con intervalli comuni e unità in punti/km². EU-Hydro sarà aggiunto solo dopo la disponibilità e la validazione dell'estratto GDB.
 
+Il gestore layout contiene tre tavole A4 con titolo, legenda, scala, fonti, data e avvertenza interpretativa: `01 — Distribuzione nazionale` in verticale; `02 — Hotspot suini — Pianura Padana centrale` e `03 — Hotspot pollame — Pianura Padana centro-orientale` in orizzontale. Le finestre di dettaglio, rispettivamente `4230000,2370000,4450000,2525000` e `4310000,2330000,4590000,2510000` in EPSG:3035, includono i massimi osservati nelle griglie da 10 km. In entrambe restano visibili i punti di suini e pollame per confronto, mentre lo sfondo KDE è specifico della categoria indicata nel titolo. “Hotspot” descrive qui un massimo esplorativo di densità, non l'esito di un test statistico di clustering.
+
 Il progetto conserva percorsi relativi ed è aggiornabile, a QGIS chiuso, con:
 
 ```bash
