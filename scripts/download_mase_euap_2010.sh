@@ -3,7 +3,7 @@
 set -euo pipefail
 
 ROOT=$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)
-URL="http://wms.pcn.minambiente.it/ogc?map=/ms_ogc/wfs/EUAP.map&service=wfs&request=getCapabilities"
+URL="https://wms.pcn.minambiente.it/ogc?map=/ms_ogc/wfs/EUAP.map&service=wfs&request=getCapabilities"
 SOURCE_LAYER="SP.SITIPROTETTI.EUAP"
 RAW_DIR="$ROOT/data/raw/mase/euap/2010"
 RAW_FILE="$RAW_DIR/euap_2010.gpkg"

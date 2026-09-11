@@ -16,6 +16,7 @@ from qgis.core import (
     QgsLayoutItemScaleBar,
     QgsLayoutPoint,
     QgsLayoutSize,
+    QgsMapLayerLegendUtils,
     QgsPrintLayout,
     QgsProject,
     QgsRasterLayer,
@@ -121,7 +122,11 @@ def add_legend(layout, map_item, box, layers):
     root = legend.model().rootGroup()
     root.clear()
     for layer, title in layers:
-        root.addLayer(layer).setName(title)
+        node = root.addLayer(layer)
+        node.setName(title)
+        if isinstance(layer, QgsRasterLayer):
+            legend_nodes = layer.legend().createLayerTreeModelLegendNodes(node)
+            QgsMapLayerLegendUtils.setLegendNodeOrder(node, list(range(1, len(legend_nodes))))
     legend.adjustBoxSize()
 
 

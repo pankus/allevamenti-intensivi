@@ -1,0 +1,5 @@
+animal,protected_dataset,total_points,inside_count,inside_percent,within_1km,within_1km_percent,within_5km,within_5km_percent,median_m
+Pigs,euap,903,4,0.44,26,2.88,237,26.25,8173.5
+Pigs,natura2000,903,12,1.33,88,9.75,479,53.05,4791.9
+Poultry,euap,1242,3,0.24,35,2.82,233,18.76,10315.0
+Poultry,natura2000,1242,14,1.13,154,12.40,744,59.90,4029.2

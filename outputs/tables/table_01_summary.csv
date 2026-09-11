@@ -1,0 +1,3 @@
+animal,total_points,occupied_grid_cells,max_points_10km_cell,max_grid_density_km2,occupied_municipalities,max_points_municipality,clc_changed_count,clc_changed_percent,kde_max_points_km2
+Pigs,903,321,27,0.27,498,13,65,7.2,0.1373
+Poultry,1242,401,26,0.26,604,28,179,14.4,0.1732

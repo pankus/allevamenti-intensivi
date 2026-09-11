@@ -20,7 +20,21 @@ qgis/allevamenti.qgs             # progetto QGIS
 scripts/                         # comandi riproducibili
 ```
 
-Non cancellare né sovrascrivere un file in `data/raw/`. Ogni download futuro va in `data/raw/<ente>/<dataset>/<versione>/`; il vettore importato/ritagliato va come nuovo layer in `data/processed/allevamenti.gpkg`. Conservare URL, data di download, licenza, versione e comando di trasformazione in questo README o in `docs/fonti.md`.
+Non cancellare né sovrascrivere un file in `data/raw/`. Ogni download futuro va in `data/raw/<ente>/<dataset>/<versione>/`; il vettore importato/ritagliato va come nuovo layer in `data/processed/allevamenti.gpkg`. Conservare URL, data di download, licenza, versione e comando di trasformazione in questo README o nella [nota metodologica](docs/nota_metodologica.md).
+
+## Inventario delle fonti
+
+| Fonte | Acquisizione locale | Versione/riferimento | Licenza o condizione documentata |
+|---|---:|---|---|
+| [Megafarm Europe](https://megafarms-europe.netlify.app/index.html) | file datato 18-08-2026; procedura non registrata | snapshot non datato | non indicata: confermare prima di pubblicare o ridistribuire |
+| [ISTAT](https://www.istat.it/storage/cartografia/confini_amministrativi/non_generalizzati/2025/Limiti01012025.zip) | 01-09-2026 | confini al 01-01-2025 | [CC BY 4.0](https://www.istat.it/dati/open-data/) |
+| [ISPRA](https://geodati.gov.it/resource/id/ispra_rm:01Idro250N_DT) | 01-09-2026 | reticolo creato nel 2004, scala 1:250.000 | CC BY 4.0 nel metadato RNDT |
+| [MASE Natura 2000](https://www.mase.gov.it/portale/schede-e-cartografie) | 01-09-2026 | trasmissione dicembre 2025, ufficiale gennaio 2026 | solo uso non commerciale con citazione; vietate distribuzione, adattamento e modifica |
+| MASE EUAP, WFS ufficiale | 01-09-2026 | VI elenco 2010 | [CC BY 4.0](https://gn.mase.gov.it/portale/note-legali), da verificare sul metadato specifico |
+| [Copernicus CLC](https://land.copernicus.eu/en/products/corine-land-cover) | 01-09-2026 | 1990 e 2018, V2020_20u1 | [accesso CLMS pieno, aperto e gratuito](https://land.copernicus.eu/en/data-policy), con attribuzione e dichiarazione delle modifiche |
+| [Copernicus EU-Hydro](https://land.copernicus.eu/en/products/eu-hydro/eu-hydro-river-network-database) | primo estratto 01-09-2026 | v1.3, soprattutto 2006–2012 | stessa data policy CLMS; estratto valido ancora in attesa |
+
+URL e SHA-256 sono conservati accanto agli originali. Per il file Megafarm il checksum è `efe54661397d83c32f2f95c79e61d4bca71abca14f8d5a99cae8fef1ba7abea3`; licenza, data di estrazione e versione restano lacune della fonte. Le condizioni specifiche Natura 2000 sono più restrittive delle note generali del Geoportale e sono quindi quelle adottate per gli artefatti distribuiti.
 
 ## Dati iniziali e controllo qualità
 
@@ -71,7 +85,7 @@ Questi risultati dipendono dalle unità amministrative 2025 e sono soggetti al *
 
 I raster separati per suini e pollame usano il kernel quartico di QGIS, senza pesi aziendali, con **bandwidth/raggio di 20 km** e celle di **2 km**. L'output QGIS scalato da punti/m² è convertito in punti/km², portato su un'estensione comune e ritagliato sul confine nazionale. Le celle interne senza influenza di punti valgono zero; l'esterno è NoData (`-9999`).
 
-Il controllo esplorativo ha confrontato bandwidth di 10, 20 e 30 km a cella costante di 2 km. Per i suini i massimi risultano 0,2200, 0,1365 e 0,1080 punti/km², con supporti di 58.608, 113.260 e 159.732 km²; per il pollame 0,2753, 0,1727 e 0,1233, con supporti di 73.400, 136.728 e 190.248 km². I 10 km producono superfici più frammentate, i 30 km fondono maggiormente i cluster; 20 km conserva dettaglio regionale senza isolare quasi ogni singolo punto. La cella da 2 km campiona il bandwidth con dieci pixel.
+Il controllo esplorativo ha confrontato bandwidth di 10, 20 e 30 km a cella costante di 2 km. Per i suini i massimi risultano 0,2200, 0,1373 e 0,1080 punti/km², con supporti di 58.608, 113.260 e 159.732 km²; per il pollame 0,2753, 0,1732 e 0,1233, con supporti di 73.400, 136.728 e 190.248 km². I 10 km producono superfici più frammentate, i 30 km fondono maggiormente i cluster; 20 km conserva dettaglio regionale senza isolare quasi ogni singolo punto. La cella da 2 km campiona il bandwidth con dieci pixel.
 
 Output: `data/derived/rasters/megafarms_kde_20km_pigs.tif` e `megafarms_kde_20km_poultry.tif`, entrambi EPSG:3035, 497 × 640 pixel. Gli stili `styles/rasters/megafarms_kde_20km_{pigs,poultry}.qml` adottano gli stessi intervalli per consentire il confronto. L'integrale dopo il ritaglio è 899,4 per i suini e 1.226,6 per il pollame, poco inferiore ai conteggi 903 e 1.242 perché la parte dei kernel che ricade in mare viene esclusa.
 
@@ -121,11 +135,18 @@ I confini comunali sono il denominatore per conteggi e densità di punti per km�
 4. **Rete Natura 2000 MASE** — scaricata: siti SIC/ZSC/ZPS, per intersezione/distanza rispetto a siti della rete.
 5. **EUAP MASE** — scaricato: parchi e riserve dell'Elenco Ufficiale Aree Protette; è un layer distinto da Natura 2000.
 
-Per ora non scaricare dati di filiera, macelli, strade, falde vulnerabili o statistica dei capi: non sono necessari al primo nucleo dimostrativo e richiedono definizioni/temporalità aggiuntive. Tutti i quattro strati sopra sono vettoriali. Il prodotto di densità kernel sarà invece un raster derivato, con il suo `.qml`.
+Dati di filiera, macelli, strade, falde vulnerabili e statistiche dei capi non fanno parte del nucleo dimostrativo: richiederebbero definizioni, licenze e temporalità aggiuntive. Gli input elencati sono vettoriali; i due raster KDE sono prodotti derivati e hanno ciascuno il proprio `.qml`.
 
 ## Rete idrografica e Natura 2000
 
 Eseguiti tramite l'orchestratore:
+
+```bash
+python3 scripts/run_downloads.py --check \
+  download_ispra_rete_idrografica.sh download_mase_natura2000_2025.sh download_mase_euap_2010.sh
+python3 scripts/run_downloads.py \
+  download_ispra_rete_idrografica.sh download_mase_natura2000_2025.sh download_mase_euap_2010.sh
+```
 
 - `ispra_reticolo_idrografico`: 61.978 linee, da Reticolo Idrografico Nazionale ISPRA 1:250.000. Originale GeoPackage, URL e checksum: `data/raw/ispra/reticolo_idrografico/1_250000/`.
 - `mase_natura2000_2025`: 2.649 poligoni, cartografia ufficiale SIC/ZSC/ZPS MASE trasmessa alla Commissione europea nel dicembre 2025. Archivio originale, URL e checksum: `data/raw/mase/natura2000/2025-12/`.
@@ -172,7 +193,18 @@ qgis --version
 ogr2ogr --version
 ```
 
-QGIS 3.40+ e GDAL/OGR sono sufficienti per questa prima fase. Se si usa `scripts/build_qgis_project.py`, installare anche i binding Python distribuiti con QGIS (es. pacchetto `python3-pyqt6` della stessa distribuzione); il file `.qgs` già incluso non richiede Python.
+Il progetto e le esportazioni sono stati validati con QGIS 4.2.2 e GDAL 3.13. Per eseguire gli script QGIS servono i binding Python della stessa distribuzione; il file `.qgs` già incluso può essere aperto senza eseguire Python.
+
+## Artefatti finali
+
+La [nota metodologica](docs/nota_metodologica.md) raccoglie assunzioni, limiti temporali, condizioni di riuso e regole d'interpretazione. Quattro tabelle CSV pronte per l'intervento sono in `outputs/tables/`: sintesi delle densità, prossimità alle aree protette, primi dieci comuni per conteggio e transizioni CLC di primo livello. Le tre tavole QGIS sono esportate a 200 dpi in `outputs/figures/`.
+
+A QGIS chiuso, tutti gli artefatti finali si rigenerano con:
+
+```bash
+QT_QPA_PLATFORM=offscreen PYTHONPATH=/usr/share/qgis/python \
+  python3 scripts/build_final_outputs.py
+```
 
 ## Riproducibilità
 

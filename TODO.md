@@ -24,9 +24,9 @@
 
 ## 4. Metodo e consegna
 
-- [ ] Aggiornare README con ogni comando, filtro e fonte realmente usati.
-- [ ] Scrivere una nota metodologica: punti = presenza, non capi/emissioni; CLC = contesto, non causalità; limiti temporali dei layer.
-- [ ] Preparare tabelle e figure finali riproducibili per l'intervento.
+- [x] Aggiornare README con ogni comando, filtro e fonte realmente usati.
+- [x] Scrivere una nota metodologica: punti = presenza, non capi/emissioni; CLC = contesto, non causalità; limiti temporali dei layer.
+- [x] Preparare tabelle e figure finali riproducibili per l'intervento.
 
 ## Nota sul reticolo idrografico
 
