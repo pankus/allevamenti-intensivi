@@ -148,9 +148,16 @@ Il piano operativo aggiornato è in [`TODO.md`](TODO.md).
 
 ## QGIS e stili
 
-Aprire `qgis/allevamenti.qgs`. Il layer attivo è categorizzato: rosso = suini, blu = pollame. Lo stile indipendente è `styles/vectors/megafarms_italy_points.qml` (in QGIS: **Proprietà layer → Simbologia → Stile → Carica stile**).
+Aprire `qgis/allevamenti.qgs`, in EPSG:3035. Il progetto contiene 19 layer organizzati in otto gruppi coerenti con il processo: presenze e attribuzioni, densità su griglia, densità comunali, densità kernel, aree protette e idrografia, copertura del suolo, confini amministrativi e tabelle di sintesi. All'apertura sono visibili solo le presenze categorizzate (rosso = suini, blu = pollame) e i confini regionali, per evitare sovrapposizioni ambigue.
 
-Per ogni raster creato in `data/derived/rasters/` creare nello stesso momento il corrispondente `styles/rasters/<nome-raster>.qml`; nessun raster è stato ancora prodotto, quindi non è corretto inventarne uno o uno stile. Interpreto “qms” come il formato QGIS **`.qml`**: confermare se intendevi un formato diverso.
+Tutti i 15 layer vettoriali spaziali caricati hanno un `.qml` in `styles/vectors/`; le due tabelle senza geometria non richiedono simbologia. I raster KDE hanno stili confrontabili in `styles/rasters/`, con intervalli comuni e unità in punti/km². EU-Hydro sarà aggiunto solo dopo la disponibilità e la validazione dell'estratto GDB.
+
+Il progetto conserva percorsi relativi ed è aggiornabile, a QGIS chiuso, con:
+
+```bash
+QT_QPA_PLATFORM=offscreen PYTHONPATH=/usr/share/qgis/python \
+  python3 scripts/build_qgis_project.py
+```
 
 ## Installazione
 

@@ -17,9 +17,9 @@
 
 ## 3. QGIS e stili
 
-- [ ] Aggiungere al progetto QGIS punti, confini ISTAT, idrografia ISPRA, EUAP, Natura 2000, CLC e output derivati. Dividi in gruppi in modo organico sulla base del processo realizzato
-- [ ] Creare uno stile `.qml` per ogni vettore caricato o scarica gli stili per i dati di base ove possibile.
-- [ ] Creare e salvare accanto a ogni raster il rispettivo `.qml` con palette, intervalli e unità leggibili.
+- [x] Aggiungere al progetto QGIS punti, confini ISTAT, idrografia ISPRA, EUAP, Natura 2000, CLC e output derivati. Dividi in gruppi in modo organico sulla base del processo realizzato
+- [x] Creare uno stile `.qml` per ogni vettore caricato o scarica gli stili per i dati di base ove possibile.
+- [x] Creare e salvare accanto a ogni raster il rispettivo `.qml` con palette, intervalli e unità leggibili.
 - [ ] Comporre una mappa nazionale e due mappe di dettaglio sui cluster, con titolo, legenda, scala, fonte e data.
 
 ## 4. Metodo e consegna
