@@ -197,7 +197,38 @@ Il progetto e le esportazioni sono stati validati con QGIS 4.2.2 e GDAL 3.13. Pe
 
 ## Artefatti finali
 
-La [nota metodologica](docs/nota_metodologica.md) raccoglie assunzioni, limiti temporali, condizioni di riuso e regole d'interpretazione. Quattro tabelle CSV pronte per l'intervento sono in `outputs/tables/`: sintesi delle densità, prossimità alle aree protette, primi dieci comuni per conteggio e transizioni CLC di primo livello. Le tre tavole QGIS sono esportate a 200 dpi in `outputs/figures/`.
+La [nota metodologica](docs/nota_metodologica.md) raccoglie assunzioni, limiti temporali, condizioni di riuso e regole d'interpretazione. Le tre tavole QGIS sono esportate a 200 dpi in `outputs/figures/`. Le quattro tabelle in `outputs/tables/` sono CSV UTF-8 con intestazione, separatore virgola e punto come separatore decimale; `animal` mantiene i valori sorgente `Pigs` e `Poultry`. Quando si apre un CSV in un foglio elettronico, `municipality_code` va importato come testo per non perdere gli zeri iniziali.
+
+### `table_01_summary.csv` — quadro comparativo
+
+Una riga per categoria animale. Riunisce indicatori con unità diverse:
+
+- `total_points`: presenze analizzabili;
+- `occupied_grid_cells` e `max_points_10km_cell`: celle da 10 km con almeno un punto e massimo conteggio in una cella;
+- `max_grid_density_km2`: massimo della griglia, cioè conteggio/100 km²;
+- `occupied_municipalities` e `max_points_municipality`: comuni con almeno una presenza e massimo conteggio comunale;
+- `clc_changed_count` e `clc_changed_percent`: punti la cui classe CLC di **terzo livello** differisce tra 1990 e 2018;
+- `kde_max_points_km2`: massimo del raster KDE con bandwidth 20 km.
+
+**Grafico consigliato:** una scheda numerica per i totali, affiancata da piccoli grafici a barre o dot plot separati per conteggi, percentuali e densità. Suini e pollame vanno accostati in ogni pannello. Non usare un unico asse, un radar chart o sommare gli indicatori: scale e significati non sono omogenei. Il massimo KDE non è direttamente intercambiabile con la densità della griglia, perché deriva da uno smoothing continuo.
+
+### `table_02_protected_areas.csv` — prossimità cumulativa
+
+Una riga per combinazione categoria animale × fonte di tutela (`natura2000` o `euap`). `inside_count` indica l'intersezione; `within_1km` e `within_5km` includono cumulativamente anche i punti più vicini e quelli interni. Le colonne `_percent` usano `total_points` della categoria come denominatore; `median_m` è la mediana delle distanze minime.
+
+**Grafico consigliato:** un dot plot o line chart cumulativo con soglie `dentro`, `≤1 km`, `≤5 km` sull'asse x e percentuale sull'asse y, in pannelli separati per Natura 2000 ed EUAP e con una linea per specie. La mediana, espressa in metri, va mostrata in un piccolo pannello separato. Non usare barre impilate: le classi sono annidate e verrebbero erroneamente percepite come parti indipendenti. Le soglie descrivono prossimità, non fasce normative o impatto.
+
+### `table_03_top_municipalities.csv` — graduatorie comunali
+
+Contiene i primi dieci comuni per `point_count`, separatamente per specie. `rank_by_point_count` è quindi una graduatoria per conteggio, non per densità; `density_km2` aggiunge il rapporto con l'area comunale e può cambiare molto con dimensione e forma del comune.
+
+**Grafico consigliato:** due bar chart orizzontali, uno per specie, ordinati per `point_count` e con la stessa scala. Se si vuole discutere l'effetto dell'area, aggiungere uno scatter plot `point_count` × `density_km2` con etichette dei comuni, invece di usare un doppio asse. Presentare sempre la graduatoria insieme alla mappa e ricordare il MAUP: i confini ISTAT 2025 influenzano conteggi e densità.
+
+### `table_04_clc_level1_transitions.csv` — contesto del suolo
+
+Aggrega i punti per macroclasse CLC 1990 (`clc_level1_1990`) e 2018 (`clc_level1_2018`), separatamente per specie. `share_percent` è la quota sul totale della specie. Questa tabella usa il **primo livello** CLC; perciò non deve riprodurre necessariamente i 65 cambiamenti suini e 179 avicoli di `table_01_summary.csv`, calcolati al terzo livello: una transizione può cambiare sottoclasse restando nella stessa macroclasse.
+
+**Grafico consigliato:** una heatmap di transizione per specie, con classe 1990 sulle righe, classe 2018 sulle colonne e colore proporzionale a `share_percent`; rende subito distinguibili permanenze sulla diagonale e cambiamenti fuori diagonale. Un diagramma alluvionale/Sankey può essere usato come visualizzazione narrativa secondaria, ma i flussi minori rischiano di scomparire dietro la prevalenza delle superfici agricole. Le transizioni riguardano il contesto dei punti oggi noti, non la storia o l'effetto causale degli allevamenti.
 
 A QGIS chiuso, tutti gli artefatti finali si rigenerano con:
 
