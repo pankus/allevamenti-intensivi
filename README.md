@@ -39,6 +39,22 @@ Per un'eventuale analisi di distanze ad alta precisione locale si valuterà un C
 
 Fonti: [EPSG 3035](https://epsg.org/crs_3035/ETRS89-extended-LAEA-Europe.html), [Copernicus CORINE Land Cover](https://land.copernicus.eu/en/products/corine-land-cover/).
 
+## Griglia nazionale e densità dei punti
+
+La griglia regolare usa celle di **10 × 10 km** in EPSG:3035, allineate ai multipli di 10.000 m del CRS. Sono conservate le 3.497 celle con intersezione areale con i confini comunali ISTAT 2025; le celle restano quadrate e non vengono ritagliate sulla costa. `cell_km2` vale quindi 100 e `density_km2` è `point_count / 100`. `land_km2` documenta la superficie terrestre nella cella e permette di riconoscere gli effetti di bordo costieri, ma non è usato come denominatore.
+
+La scelta di 10 km è un compromesso nazionale verificato esplorativamente contro celle di 5 e 20 km. Per suini, le celle occupate e il massimo per cella sono rispettivamente 544/12, 321/27 e 174/53; per pollame 689/19, 401/26 e 204/77. La griglia da 5 km frammenta maggiormente i 2.145 punti, mentre quella da 20 km appiattisce i cluster locali.
+
+Output: `data/derived/vectors/megafarms_grid_10km.gpkg`, replicato nel GeoPackage analitico come `megafarms_grid_10km_pigs` e `megafarms_grid_10km_poultry`. Controlli: 903 suini e 1.242 punti di pollame conservati; 321 e 401 celle occupate; geometrie valide. Gli stili sono in `styles/vectors/` e classificano la densità in punti/km².
+
+Comando riproducibile:
+
+```bash
+python3 scripts/build_grid_density.py
+```
+
+La densità misura esclusivamente la concentrazione delle localizzazioni pubblicate, non capi, produzione, emissioni o pressione ambientale effettiva. Dimensione, allineamento e celle costiere possono modificare il pattern osservato.
+
 ## Primo download: confini ISTAT 2025
 
 Eseguito con `scripts/download_istat_confini_2025.sh`. Il download originale (94,7 MB), URL e checksum sono in `data/raw/istat/confini_amministrativi/2025/`; il GeoPackage contiene i layer EPSG:3035 `istat_comuni_2025` (7.896), `istat_province_2025` (107) e `istat_regioni_2025` (20).

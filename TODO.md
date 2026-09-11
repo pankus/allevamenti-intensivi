@@ -8,7 +8,7 @@
 
 ## 2. Analisi
 
-- [ ] Creare una griglia regolare nazionale in EPSG:3035 e calcolare, separatamente per suini e pollame, numero di punti e densità per km².
+- [x] Creare una griglia regolare nazionale in EPSG:3035 e calcolare, separatamente per suini e pollame, numero di punti e densità per km².
 - [ ] Calcolare gli stessi conteggi per comune; dichiarare la dipendenza dalle unità amministrative (MAUP).
 - [ ] Generare due raster di densità kernel, uno per suini e uno per pollame; scegliere e documentare cella e bandwidth dopo un controllo esplorativo.
 - [ ] Attribuire a ciascun punto la classe CLC 1990 e CLC 2018 e produrre una tabella delle transizioni di copertura del suolo attorno ai punti attuali.
@@ -17,8 +17,8 @@
 
 ## 3. QGIS e stili
 
-- [ ] Aggiungere al progetto QGIS punti, confini ISTAT, idrografia ISPRA, EUAP, Natura 2000, CLC e output derivati.
-- [ ] Creare uno stile `.qml` per ogni vettore caricato.
+- [ ] Aggiungere al progetto QGIS punti, confini ISTAT, idrografia ISPRA, EUAP, Natura 2000, CLC e output derivati. Dividi in gruppi in modo organico sulla base del processo realizzato
+- [ ] Creare uno stile `.qml` per ogni vettore caricato o scarica gli stili per i dati di base ove possibile.
 - [ ] Creare e salvare accanto a ogni raster il rispettivo `.qml` con palette, intervalli e unità leggibili.
 - [ ] Comporre una mappa nazionale e due mappe di dettaglio sui cluster, con titolo, legenda, scala, fonte e data.
 
