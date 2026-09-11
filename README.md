@@ -81,6 +81,18 @@ python3 scripts/build_kernel_density.py
 
 Il risultato rappresenta intensità spaziale stimata delle sole localizzazioni note. Bandwidth e funzione kernel modificano forma e intensità degli hotspot; il raster non misura capi, emissioni o produzione.
 
+## Classi e transizioni CORINE Land Cover
+
+A ciascuno dei 2.145 punti attuali sono attribuiti per intersezione i codici CLC di terzo livello del 1990 e del 2018. Un solo punto, nel comune di Rosolina, cade in una lacuna topologica/costiera: in entrambi gli anni è assegnato alla classe più vicina entro la tolleranza dichiarata di 200 m (`142`, distanza 137,84 m). I campi `clc1990_m` e `clc2018_m` valgono zero per le intersezioni dirette e registrano la distanza per questo controllo; non risultano assegnazioni ambigue su confini tra più poligoni.
+
+Output: `data/derived/vectors/megafarms_clc_transitions.gpkg`, importato anche in `allevamenti.gpkg` con il layer puntuale `megafarms_points_clc_1990_2018` e la tabella `megafarms_clc_transitions`. La stessa tabella è esportata come CSV nella directory derivata. Contiene conteggi e percentuali per suini, pollame e totale, distinti per coppia `clc_1990` → `clc_2018`; i codici seguono la nomenclatura ufficiale CLC. Sono diverse tra i due anni 65 attribuzioni suine (7,2%) e 179 avicole (14,4%).
+
+```bash
+python3 scripts/build_clc_transitions.py
+```
+
+Il confronto descrive il cambiamento di copertura del suolo **nelle localizzazioni oggi note**. Non dimostra che gli allevamenti esistessero nel 1990 o nel 2018, né che abbiano causato le transizioni osservate; risoluzione minima e generalizzazione CLC impongono inoltre di interpretare la classe come contesto territoriale, non come rilievo del singolo fabbricato.
+
 ## Primo download: confini ISTAT 2025
 
 Eseguito con `scripts/download_istat_confini_2025.sh`. Il download originale (94,7 MB), URL e checksum sono in `data/raw/istat/confini_amministrativi/2025/`; il GeoPackage contiene i layer EPSG:3035 `istat_comuni_2025` (7.896), `istat_province_2025` (107) e `istat_regioni_2025` (20).
