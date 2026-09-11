@@ -29,7 +29,7 @@ cat > "$payload" <<'JSON'
     "DatasetID": "99585ce3333d49d8adf24b13b1337704",
     "DatasetDownloadInformationID": "e665c694-4d40-4041-8517-1f91e4050126",
     "NUTS": "IT",
-    "OutputFormat": "GPKG",
+    "OutputFormat": "GDB",
     "OutputGCS": "EPSG:3035"
   }]
 }

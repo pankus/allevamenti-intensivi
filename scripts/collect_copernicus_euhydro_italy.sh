@@ -1,12 +1,11 @@
 #!/usr/bin/env bash
-# Collect completed CLMS task 29962405257 and import all EU-Hydro vector layers.
+# Collect the geometry-preserving GDB extract and import all EU-Hydro vector layers.
 set -euo pipefail
 
 ROOT=$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)
-TASK_ID=29962405257
+TASK_ID=10074359711
 RAW_DIR="$ROOT/data/raw/copernicus/eu_hydro/v1.3_2006-2012"
 ARCHIVE="$RAW_DIR/eu_hydro_italy_task_${TASK_ID}.zip"
-SOURCE="$RAW_DIR/extracted/Results/EU-Hydro.gpkg"
 
 if [[ ! -s "$ARCHIVE" ]]; then
   set -a
@@ -26,7 +25,7 @@ PY
   curl --fail --location --retry 3 --output "$ARCHIVE" "$url"
 fi
 
-if [[ ! -f "$SOURCE" ]]; then
+if ! find "$RAW_DIR/extracted" -type d -name '*.gdb' -print -quit 2>/dev/null | grep -q .; then
   mkdir -p "$RAW_DIR/extracted"
   unzip -oq "$ARCHIVE" -d "$RAW_DIR/extracted"
 fi

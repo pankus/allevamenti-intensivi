@@ -136,11 +136,13 @@ Entrambi sono importati in EPSG:3035 in `data/processed/allevamenti.gpkg`. La Na
 
 ### Reticolo per le distanze
 
-Il reticolo ISPRA 1:250.000 resta nel progetto come quadro nazionale e di bacino, ma non supporta misure di distanza di 500 m–1 km. Per l'analisi di prova è scelto **EU-Hydro River Network Database v1.3** (EEA/Copernicus): vettoriale, coerente su scala europea, con uso raccomandato fino a 1:30.000 e copertura italiana. Il task CLMS `29962405257` è stato completato e l'originale, URL sorgente e checksum sono in `data/raw/copernicus/eu_hydro/v1.3_2006-2012/`.
+Il reticolo ISPRA 1:250.000 resta nel progetto come quadro nazionale e di bacino, ma non supporta misure di distanza di 500 m–1 km. Per l'analisi di prova è scelto **EU-Hydro River Network Database v1.3** (EEA/Copernicus): vettoriale, coerente su scala europea, con uso raccomandato fino a 1:30.000 e copertura italiana.
 
-Tutti i 20 layer vettoriali del pacchetto sono importati in `allevamenti.gpkg` con prefisso `euhydro_`; il layer operativo per i corsi d'acqua è `euhydro_hydro_river_net_l` (95.002 feature).
+Il controllo geometrico ha respinto l'estratto GeoPackage del task CLMS `29962405257`: il layer `HYDRO/River_Net_l` contiene 95.002 record ma **zero geometrie**, perché la conversione dal formato originale GDB ha prodotto campi geometrici nulli per linee e punti. L'archivio originale, URL e checksum restano in `data/raw/copernicus/eu_hydro/v1.3_2006-2012/` per audit; i 20 layer importati sono stati rimossi da `allevamenti.gpkg` per impedirne l'uso accidentale.
 
-EU-Hydro deriva soprattutto da fonti 2006–2012: descrive un'infrastruttura idrografica di riferimento, non lo stato attuale. Nei futuri approfondimenti sui cluster si potranno sostituire o verificare le distanze con i reticoli ufficiali regionali, normalmente più dettagliati ma non omogenei per data, scala, attributi e licenza. Non fonderli in un unico reticolo nazionale senza un controllo di armonizzazione. La raccolta e l'importazione sono ripetibili con `scripts/collect_copernicus_euhydro_italy.sh`.
+L'11 settembre 2026 è stato richiesto un nuovo estratto nel formato nativo **GDB**, task CLMS `10074359711`, attualmente in coda. `scripts/import_copernicus_euhydro_italy.sh` ora accetta solo il GDB e interrompe l'importazione se `River_Net_l` non contiene geometrie lineari. Raccolta e importazione saranno ripetibili con `scripts/collect_copernicus_euhydro_italy.sh` quando il task sarà pronto.
+
+EU-Hydro deriva soprattutto da fonti 2006–2012: descrive un'infrastruttura idrografica di riferimento, non lo stato attuale. Nei futuri approfondimenti sui cluster si potranno sostituire o verificare le distanze con i reticoli ufficiali regionali, normalmente più dettagliati ma non omogenei per data, scala, attributi e licenza. Non fonderli in un unico reticolo nazionale senza un controllo di armonizzazione.
 
 Il piano operativo aggiornato è in [`TODO.md`](TODO.md).
 

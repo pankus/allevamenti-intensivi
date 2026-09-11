@@ -4,7 +4,7 @@
 
 - [x] Completato il task CLMS `75776101196`: scaricati manualmente gli estratti Italia CLC 1990 e 2018, conservati in `data/raw/copernicus/clc/<anno>/` e importati in `data/processed/allevamenti.gpkg`.
 - [x] Registrati in `README.md` nomi, dimensioni, checksum, URL sorgente, layer effettivi e comando d'importazione dei due file.
-- [x] Scaricato il task CLMS `29962405257` per **EU-Hydro River Network Database v1.3**, conservato l'originale e importati i layer. Usare `euhydro_hydro_river_net_l` nell'analisi di prossimità; mantenerlo distinto dal reticolo ISPRA 1:250.000, che resta utile per quadro nazionale e bacini.
+- [ ] Sostituire l'estratto EU-Hydro del task `29962405257`, respinto perché `River_Net_l` ha 95.002 record ma geometrie tutte nulle. Richiesto il formato nativo GDB con task `10074359711` (in coda); dopo il download validare e importare `euhydro_hydro_river_net_l`, mantenendolo distinto dal reticolo ISPRA 1:250.000.
 
 ## 2. Analisi
 
