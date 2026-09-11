@@ -55,6 +55,18 @@ python3 scripts/build_grid_density.py
 
 La densità misura esclusivamente la concentrazione delle localizzazioni pubblicate, non capi, produzione, emissioni o pressione ambientale effettiva. Dimensione, allineamento e celle costiere possono modificare il pattern osservato.
 
+## Conteggi e densità comunali
+
+I punti sono attribuiti per intersezione ai confini `istat_comuni_2025`; eventuali punti esattamente sul confine vengono assegnati deterministicamente al codice comunale minore. In questa esecuzione non si verificano casi ambigui. La densità è `point_count / area_km2`, con area geometrica calcolata in EPSG:3035.
+
+Output: `data/derived/vectors/megafarms_municipality_density.gpkg`, importato anche in `allevamenti.gpkg` come `megafarms_municipality_2025_pigs` e `megafarms_municipality_2025_poultry`. Ciascun layer contiene tutti i 7.896 comuni: 498 hanno almeno un punto suino e 604 almeno un punto di pollame; i totali restano 903 e 1.242. Le due geometrie ISTAT non valide (Sannicandro di Bari e Bronte) sono riparate solo nell'output derivato, senza modificare il layer sorgente. Gli stili in `styles/vectors/` usano classi comuni di punti/km² per rendere confrontabili le due categorie.
+
+```bash
+python3 scripts/build_municipality_density.py
+```
+
+Questi risultati dipendono dalle unità amministrative 2025 e sono soggetti al **modifiable areal unit problem (MAUP)**: aggregazioni e densità cambiano con forma, estensione e versione dei comuni. Il confronto con la griglia regolare serve a non scambiare un effetto dei confini amministrativi per un pattern territoriale stabile; i comuni 2025 non vanno inoltre retroproiettati senza cautela su periodi storici.
+
 ## Primo download: confini ISTAT 2025
 
 Eseguito con `scripts/download_istat_confini_2025.sh`. Il download originale (94,7 MB), URL e checksum sono in `data/raw/istat/confini_amministrativi/2025/`; il GeoPackage contiene i layer EPSG:3035 `istat_comuni_2025` (7.896), `istat_province_2025` (107) e `istat_regioni_2025` (20).

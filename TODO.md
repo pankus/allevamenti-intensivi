@@ -9,7 +9,7 @@
 ## 2. Analisi
 
 - [x] Creare una griglia regolare nazionale in EPSG:3035 e calcolare, separatamente per suini e pollame, numero di punti e densità per km².
-- [ ] Calcolare gli stessi conteggi per comune; dichiarare la dipendenza dalle unità amministrative (MAUP).
+- [x] Calcolare gli stessi conteggi per comune; dichiarare la dipendenza dalle unità amministrative (MAUP).
 - [ ] Generare due raster di densità kernel, uno per suini e uno per pollame; scegliere e documentare cella e bandwidth dopo un controllo esplorativo.
 - [ ] Attribuire a ciascun punto la classe CLC 1990 e CLC 2018 e produrre una tabella delle transizioni di copertura del suolo attorno ai punti attuali.
 - [ ] Calcolare intersezione e distanza da Natura 2000 ed EUAP, senza unire i due layer e senza interpretare l'EUAP 2010 come tutela attuale.
