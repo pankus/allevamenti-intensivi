@@ -67,6 +67,20 @@ python3 scripts/build_municipality_density.py
 
 Questi risultati dipendono dalle unità amministrative 2025 e sono soggetti al **modifiable areal unit problem (MAUP)**: aggregazioni e densità cambiano con forma, estensione e versione dei comuni. Il confronto con la griglia regolare serve a non scambiare un effetto dei confini amministrativi per un pattern territoriale stabile; i comuni 2025 non vanno inoltre retroproiettati senza cautela su periodi storici.
 
+## Densità kernel
+
+I raster separati per suini e pollame usano il kernel quartico di QGIS, senza pesi aziendali, con **bandwidth/raggio di 20 km** e celle di **2 km**. L'output QGIS scalato da punti/m² è convertito in punti/km², portato su un'estensione comune e ritagliato sul confine nazionale. Le celle interne senza influenza di punti valgono zero; l'esterno è NoData (`-9999`).
+
+Il controllo esplorativo ha confrontato bandwidth di 10, 20 e 30 km a cella costante di 2 km. Per i suini i massimi risultano 0,2200, 0,1365 e 0,1080 punti/km², con supporti di 58.608, 113.260 e 159.732 km²; per il pollame 0,2753, 0,1727 e 0,1233, con supporti di 73.400, 136.728 e 190.248 km². I 10 km producono superfici più frammentate, i 30 km fondono maggiormente i cluster; 20 km conserva dettaglio regionale senza isolare quasi ogni singolo punto. La cella da 2 km campiona il bandwidth con dieci pixel.
+
+Output: `data/derived/rasters/megafarms_kde_20km_pigs.tif` e `megafarms_kde_20km_poultry.tif`, entrambi EPSG:3035, 497 × 640 pixel. Gli stili `styles/rasters/megafarms_kde_20km_{pigs,poultry}.qml` adottano gli stessi intervalli per consentire il confronto. L'integrale dopo il ritaglio è 899,4 per i suini e 1.226,6 per il pollame, poco inferiore ai conteggi 903 e 1.242 perché la parte dei kernel che ricade in mare viene esclusa.
+
+```bash
+python3 scripts/build_kernel_density.py
+```
+
+Il risultato rappresenta intensità spaziale stimata delle sole localizzazioni note. Bandwidth e funzione kernel modificano forma e intensità degli hotspot; il raster non misura capi, emissioni o produzione.
+
 ## Primo download: confini ISTAT 2025
 
 Eseguito con `scripts/download_istat_confini_2025.sh`. Il download originale (94,7 MB), URL e checksum sono in `data/raw/istat/confini_amministrativi/2025/`; il GeoPackage contiene i layer EPSG:3035 `istat_comuni_2025` (7.896), `istat_province_2025` (107) e `istat_regioni_2025` (20).
