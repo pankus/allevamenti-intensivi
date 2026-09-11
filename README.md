@@ -93,6 +93,18 @@ python3 scripts/build_clc_transitions.py
 
 Il confronto descrive il cambiamento di copertura del suolo **nelle localizzazioni oggi note**. Non dimostra che gli allevamenti esistessero nel 1990 o nel 2018, né che abbiano causato le transizioni osservate; risoluzione minima e generalizzazione CLC impongono inoltre di interpretare la classe come contesto territoriale, non come rilievo del singolo fabbricato.
 
+## Prossimità alle aree tutelate
+
+Per ogni punto sono calcolati separatamente numero di poligoni intersecati, distanza minima in metri e codice del sito più vicino per `mase_natura2000_2025` e `mase_euap_2010`. I due regimi non sono dissolti né uniti: un punto può intersecare più siti Natura 2000, mentre le eventuali sovrapposizioni tra Natura 2000 ed EUAP restano due osservazioni distinte. Le sei geometrie EUAP non valide sono riparate solo in memoria durante il calcolo; l'originale non viene modificato.
+
+Output: `data/derived/vectors/megafarms_protected_areas.gpkg`, importato anche in `allevamenti.gpkg` come `megafarms_points_protected_areas` e tabella `megafarms_protected_areas_summary`; il riepilogo è esportato anche in CSV. Tra i suini, 12 punti intersecano Natura 2000 e 4 EUAP; tra il pollame, rispettivamente 14 e 3. Entro 1 km ricadono 88/26 punti suini e 154/35 punti avicoli (Natura 2000/EUAP); entro 5 km 479/237 e 744/233. Le distanze mediane sono 4.792 e 8.173 m per i suini, 4.029 e 10.315 m per il pollame.
+
+```bash
+python3 scripts/build_protected_areas_proximity.py
+```
+
+Le soglie di 1 e 5 km sono riepiloghi descrittivi, non fasce normative né prove di impatto. Natura 2000 rappresenta la fornitura MASE 2025; EUAP è il VI Elenco del 2010 e va interpretato come strato storico di tutela, non come perimetrazione attuale. Distanza e intersezione non dimostrano da sole pressione, contaminazione o relazione causale.
+
 ## Primo download: confini ISTAT 2025
 
 Eseguito con `scripts/download_istat_confini_2025.sh`. Il download originale (94,7 MB), URL e checksum sono in `data/raw/istat/confini_amministrativi/2025/`; il GeoPackage contiene i layer EPSG:3035 `istat_comuni_2025` (7.896), `istat_province_2025` (107) e `istat_regioni_2025` (20).

@@ -12,7 +12,7 @@
 - [x] Calcolare gli stessi conteggi per comune; dichiarare la dipendenza dalle unità amministrative (MAUP).
 - [x] Generare due raster di densità kernel, uno per suini e uno per pollame; scegliere e documentare cella e bandwidth dopo un controllo esplorativo.
 - [x] Attribuire a ciascun punto la classe CLC 1990 e CLC 2018 e produrre una tabella delle transizioni di copertura del suolo attorno ai punti attuali.
-- [ ] Calcolare intersezione e distanza da Natura 2000 ed EUAP, senza unire i due layer e senza interpretare l'EUAP 2010 come tutela attuale.
+- [x] Calcolare intersezione e distanza da Natura 2000 ed EUAP, senza unire i due layer e senza interpretare l'EUAP 2010 come tutela attuale.
 - [ ] Solo dopo il download EU-Hydro: calcolare distanze dai corsi d'acqua. Escludere i risultati se il dettaglio della sorgente non regge la soglia scelta.
 
 ## 3. QGIS e stili
