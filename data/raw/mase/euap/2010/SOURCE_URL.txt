@@ -1,0 +1,1 @@
+http://wms.pcn.minambiente.it/ogc?map=/ms_ogc/wfs/EUAP.map&service=wfs&request=getCapabilities

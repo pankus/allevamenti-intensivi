@@ -1,0 +1,19 @@
+<!DOCTYPE qgis PUBLIC 'http://mrcc.com/qgis.dtd' 'SYSTEM'>
+<qgis version="3.40.0" projectname="Allevamenti intensivi in Italia">
+  <homePath path="../"/>
+  <title>Allevamenti intensivi in Italia</title>
+  <projectCrs><spatialrefsys><authid>EPSG:3035</authid><description>ETRS89-extended / LAEA Europe</description><projectionacronym>laea</projectionacronym><ellipsoidacronym>GRS80</ellipsoidacronym><geographicflag>false</geographicflag></spatialrefsys></projectCrs>
+  <layer-tree-group name="Allevamenti intensivi in Italia" expanded="1" checked="Qt::Checked">
+    <layer-tree-layer id="megafarms_italy_points_valid_2026" name="Allevamenti intensivi (Italia)" source="../data/processed/allevamenti.gpkg|layername=megafarms_italy_points_valid" providerKey="ogr" expanded="1" checked="Qt::Checked"/>
+  </layer-tree-group>
+  <maplayers>
+    <maplayer type="vector" geometry="Point" labelsEnabled="0" styleCategories="AllStyleCategories">
+      <id>megafarms_italy_points_valid_2026</id>
+      <datasource>../data/processed/allevamenti.gpkg|layername=megafarms_italy_points_valid</datasource>
+      <layername>Allevamenti intensivi (Italia)</layername>
+      <provider encoding="UTF-8">ogr</provider>
+      <srs><spatialrefsys><authid>EPSG:3035</authid><description>ETRS89-extended / LAEA Europe</description><projectionacronym>laea</projectionacronym><ellipsoidacronym>GRS80</ellipsoidacronym><geographicflag>false</geographicflag></spatialrefsys></srs>
+      <renderer-v2 type="categorizedSymbol" attr="Type of Animal" enableorderby="0" symbollevels="0" referencescale="-1"><categories><category value="Pigs" label="Suini" symbol="0" render="true"/><category value="Poultry" label="Pollame" symbol="1" render="true"/></categories><symbols><symbol name="0" type="marker" clip_to_extent="1" alpha="1"><layer class="SimpleMarker" enabled="1" pass="0"><Option type="Map"><Option name="color" type="QString" value="178,24,43,255"/><Option name="name" type="QString" value="circle"/><Option name="outline_color" type="QString" value="255,255,255,255"/><Option name="outline_width" type="QString" value="0.35"/><Option name="size" type="QString" value="2.4"/><Option name="size_unit" type="QString" value="MM"/></Option></layer></symbol><symbol name="1" type="marker" clip_to_extent="1" alpha="1"><layer class="SimpleMarker" enabled="1" pass="0"><Option type="Map"><Option name="color" type="QString" value="33,102,172,255"/><Option name="name" type="QString" value="circle"/><Option name="outline_color" type="QString" value="255,255,255,255"/><Option name="outline_width" type="QString" value="0.35"/><Option name="size" type="QString" value="2.4"/><Option name="size_unit" type="QString" value="MM"/></Option></layer></symbol></symbols></renderer-v2>
+    </maplayer>
+  </maplayers>
+</qgis>

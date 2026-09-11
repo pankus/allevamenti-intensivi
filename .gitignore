@@ -1,0 +1,31 @@
+# Credenziali locali
+.env
+.env.*
+!.env.example
+.secrets/
+
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+
+# Dati GIS scaricati o rigenerabili; URL, checksum e JSON di richiesta restano versionabili
+data/raw/**/extracted/
+data/raw/**/*.gpkg
+data/raw/**/*.zip
+data/processed/*
+data/derived/vectors/*
+data/derived/rasters/*
+
+# File temporanei/ausiliari GIS
+data/**/*.gpkg-*
+data/**/*.aux.xml
+data/**/*.ovr
+*.qgs~
+*.qgz~
+
+# Editor e sistema operativo
+.vscode/
+.idea/
+*~
+.DS_Store

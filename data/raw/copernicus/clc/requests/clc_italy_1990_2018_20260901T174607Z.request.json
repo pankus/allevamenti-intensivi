@@ -1,0 +1,18 @@
+{
+  "Datasets": [
+    {
+      "DatasetID": "0407d497d3c44bcd93ce8fd5bf78596a",
+      "DatasetDownloadInformationID": "1bda2fbd-3230-42ba-98cf-69c96ac063bc",
+      "NUTS": "IT",
+      "OutputFormat": "GPKG",
+      "OutputGCS": "EPSG:3035"
+    },
+    {
+      "DatasetID": "8b393c8e474642d5acb4ed70fc2dc024",
+      "DatasetDownloadInformationID": "fd1c53e8-d710-46a6-8363-2febf699c7be",
+      "NUTS": "IT",
+      "OutputFormat": "GPKG",
+      "OutputGCS": "EPSG:3035"
+    }
+  ]
+}
