@@ -32,6 +32,7 @@ Non cancellare né sovrascrivere un file in `data/raw/`. Ogni download futuro va
 | [MASE Natura 2000](https://www.mase.gov.it/portale/schede-e-cartografie) | 01-09-2026 | trasmissione dicembre 2025, ufficiale gennaio 2026 | solo uso non commerciale con citazione; vietate distribuzione, adattamento e modifica |
 | MASE EUAP, WFS ufficiale | 01-09-2026 | VI elenco 2010 | [CC BY 4.0](https://gn.mase.gov.it/portale/note-legali), da verificare sul metadato specifico |
 | [Copernicus CLC](https://land.copernicus.eu/en/products/corine-land-cover) | 01-09-2026 | 1990 e 2018, V2020_20u1 | [accesso CLMS pieno, aperto e gratuito](https://land.copernicus.eu/en/data-policy), con attribuzione e dichiarazione delle modifiche |
+| [Copernicus DEM GLO-30](https://dataspace.copernicus.eu/explore-data/data-collections/copernicus-contributing-missions/collections-description/COP-DEM) | 11-09-2026 | tile COG GLO-30 pubblicati 2022 | uso libero con attribuzione secondo condizioni Copernicus DEM |
 | [Copernicus EU-Hydro](https://land.copernicus.eu/en/products/eu-hydro/eu-hydro-river-network-database) | primo estratto 01-09-2026 | v1.3, soprattutto 2006–2012 | stessa data policy CLMS; estratto valido ancora in attesa |
 
 URL e SHA-256 sono conservati accanto agli originali. Per il file Megafarm il checksum è `efe54661397d83c32f2f95c79e61d4bca71abca14f8d5a99cae8fef1ba7abea3`; licenza, data di estrazione e versione restano lacune della fonte. Le condizioni specifiche Natura 2000 sono più restrittive delle note generali del Geoportale e sono quindi quelle adottate per gli artefatti distribuiti.
@@ -47,7 +48,7 @@ L'assunzione WGS 84 deriva dalla convenzione GeoJSON e dalla natura delle coordi
 
 ## CRS adottato
 
-Il progetto e i dati derivati usano **ETRS89 / LAEA Europe, EPSG:3035**. È una proiezione metrica a pari area con ambito dichiarato per analisi statistiche europee: è quindi idonea a buffer, aree, densità per km² e raster/grid comparabili. Non calcolare aree o densità in gradi (`EPSG:4326`).
+Il progetto e i dati derivati usano **ETRS89 / LAEA Europe, EPSG:3035**. È una proiezione metrica a pari area con ambito dichiarato per analisi statistiche europee: è quindi idonea a buffer, aree, densità per km², raster/grid comparabili e analisi geomorfologiche derivate. Non calcolare aree o densità in gradi (`EPSG:4326`).
 
 Per un'eventuale analisi di distanze ad alta precisione locale si valuterà un CRS UTM per singola zona; per l'Italia intera, che attraversa più zone, EPSG:3035 evita discontinuità e conserva confrontabilità con CORINE/EEA.
 
@@ -106,6 +107,20 @@ python3 scripts/build_clc_transitions.py
 ```
 
 Il confronto descrive il cambiamento di copertura del suolo **nelle localizzazioni oggi note**. Non dimostra che gli allevamenti esistessero nel 1990 o nel 2018, né che abbiano causato le transizioni osservate; risoluzione minima e generalizzazione CLC impongono inoltre di interpretare la classe come contesto territoriale, non come rilievo del singolo fabbricato.
+
+## Quota e classi geomorfologiche
+
+Per ogni punto valido sono attribuiti quota DEM e classe geomorfologica. La fonte è **Copernicus DEM GLO-30**: sono scaricati solo i 37 tile COG da 1° × 1° che contengono almeno un punto, conservati in `data/raw/copernicus/dem/glo30/tiles/` con URL e SHA-256. I tile originali sono prima uniti in VRT, poi riproiettati insieme in un unico DEM EPSG:3035 a 100 m; su questo raster continuo viene eseguito `r.geomorphon`, evitando disallineamenti e bordi artificiali tra tile.
+
+Output: `data/derived/vectors/megafarms_dem_geomorphon.gpkg`, importato anche in `allevamenti.gpkg` come `megafarms_points_dem_geomorphon` e tabella `megafarms_dem_geomorphon_summary`; CSV in `data/derived/vectors/`. I raster derivati sono `data/derived/rasters/copernicus_dem_glo30_100m.tif` e `copernicus_dem_glo30_geomorphon_100m.tif`. Gli stili sono in `styles/rasters/` e `styles/vectors/`.
+
+```bash
+python3 scripts/run_downloads.py --check download_copernicus_dem_glo30_tiles.sh
+python3 scripts/run_downloads.py download_copernicus_dem_glo30_tiles.sh
+python3 scripts/build_dem_geomorphon.py
+```
+
+Controlli: 2.145 punti conservati; quote mancanti 0; classi geomorfologiche mancanti 0. Il 79,0% dei punti suini e il 60,5% dei punti avicoli ricade in classe `flat`; le quote mediane sono rispettivamente 57,0 m e 27,2 m. Quota e geomorfologia descrivono il contesto fisico delle localizzazioni, non impatto, causalità o intensità produttiva.
 
 ## Prossimità alle aree tutelate
 
@@ -169,9 +184,9 @@ Il piano operativo aggiornato è in [`TODO.md`](TODO.md).
 
 ## QGIS e stili
 
-Aprire `qgis/allevamenti.qgs`, in EPSG:3035. Il progetto contiene 19 layer organizzati in otto gruppi coerenti con il processo: presenze e attribuzioni, densità su griglia, densità comunali, densità kernel, aree protette e idrografia, copertura del suolo, confini amministrativi e tabelle di sintesi. All'apertura sono visibili solo le presenze categorizzate (rosso = suini, blu = pollame) e i confini regionali, per evitare sovrapposizioni ambigue.
+Aprire `qgis/allevamenti.qgs`, in EPSG:3035. Il progetto contiene 23 layer organizzati in nove gruppi coerenti con il processo: presenze e attribuzioni, densità su griglia, densità comunali, densità kernel, DEM e geomorfologia, aree protette e idrografia, copertura del suolo, confini amministrativi e tabelle di sintesi. All'apertura sono visibili solo le presenze categorizzate (rosso = suini, blu = pollame) e i confini regionali, per evitare sovrapposizioni ambigue.
 
-Tutti i 15 layer vettoriali spaziali caricati hanno un `.qml` in `styles/vectors/`; le due tabelle senza geometria non richiedono simbologia. I raster KDE hanno stili confrontabili in `styles/rasters/`, con intervalli comuni e unità in punti/km². EU-Hydro sarà aggiunto solo dopo la disponibilità e la validazione dell'estratto GDB.
+Tutti i layer vettoriali spaziali caricati hanno un `.qml` in `styles/vectors/`; le tabelle senza geometria non richiedono simbologia. I raster KDE e DEM/geomorphon hanno stili in `styles/rasters/`. EU-Hydro sarà aggiunto solo dopo la disponibilità e la validazione dell'estratto GDB.
 
 Il gestore layout contiene tre tavole A4 con titolo, legenda, scala, fonti, data e avvertenza interpretativa: `01 — Distribuzione nazionale` in verticale; `02 — Hotspot suini — Pianura Padana centrale` e `03 — Hotspot pollame — Pianura Padana centro-orientale` in orizzontale. Le finestre di dettaglio, rispettivamente `4230000,2370000,4450000,2525000` e `4310000,2330000,4590000,2510000` in EPSG:3035, includono i massimi osservati nelle griglie da 10 km. In entrambe restano visibili i punti di suini e pollame per confronto, mentre lo sfondo KDE è specifico della categoria indicata nel titolo. “Hotspot” descrive qui un massimo esplorativo di densità, non l'esito di un test statistico di clustering.
 
@@ -193,7 +208,7 @@ qgis --version
 ogr2ogr --version
 ```
 
-Il progetto e le esportazioni sono stati validati con QGIS 4.2.2 e GDAL 3.13. Per eseguire gli script QGIS servono i binding Python della stessa distribuzione; il file `.qgs` già incluso può essere aperto senza eseguire Python.
+Il progetto e le esportazioni sono stati validati con QGIS 4.2.2, GDAL 3.13 e GRASS GIS 8.4.2. Per eseguire gli script QGIS servono i binding Python della stessa distribuzione; il file `.qgs` già incluso può essere aperto senza eseguire Python.
 
 ## Artefatti finali
 

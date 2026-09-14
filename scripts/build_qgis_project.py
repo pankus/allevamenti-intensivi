@@ -47,6 +47,11 @@ GROUPS = {
         ("megafarms_kde_20km_pigs", "KDE suini — bandwidth 20 km", False),
         ("megafarms_kde_20km_poultry", "KDE pollame — bandwidth 20 km", False),
     ],
+    "DEM e geomorfologia": [
+        ("megafarms_points_dem_geomorphon", "Presenze con quota e geomorphon", False),
+        ("copernicus_dem_glo30_100m", "Copernicus DEM GLO-30 — 100 m", False),
+        ("copernicus_dem_glo30_geomorphon_100m", "Geomorphon da GLO-30 — 100 m", False),
+    ],
     "Aree protette e idrografia": [
         ("mase_natura2000_2025", "Natura 2000 — 2025", False),
         ("mase_euap_2010", "EUAP — VI elenco 2010", False),
@@ -64,12 +69,13 @@ GROUPS = {
     "Tabelle di sintesi": [
         ("megafarms_clc_transitions", "Transizioni CLC 1990–2018", False),
         ("megafarms_protected_areas_summary", "Sintesi prossimità aree protette", False),
+        ("megafarms_dem_geomorphon_summary", "Sintesi quota e geomorphon", False),
     ],
 }
 
 
 def add_layer(project, group, source_name, title, visible):
-    raster = source_name.startswith("megafarms_kde_")
+    raster = source_name.startswith("megafarms_kde_") or source_name.startswith("copernicus_dem_glo30_")
     if raster:
         source = ROOT / f"data/derived/rasters/{source_name}.tif"
         layer = QgsRasterLayer(str(source), title, "gdal")

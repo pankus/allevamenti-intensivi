@@ -14,6 +14,7 @@
 - [x] Attribuire a ciascun punto la classe CLC 1990 e CLC 2018 e produrre una tabella delle transizioni di copertura del suolo attorno ai punti attuali.
 - [x] Calcolare intersezione e distanza da Natura 2000 ed EUAP, senza unire i due layer e senza interpretare l'EUAP 2010 come tutela attuale.
 - [ ] Solo dopo il download EU-Hydro: calcolare distanze dai corsi d'acqua. Escludere i risultati se il dettaglio della sorgente non regge la soglia scelta.
+- [x] Usare Copernicus DEM GLO-30 per attribuire quota e classe geomorfologica ai punti degli allevamenti. Conservati i tile originali in `data/raw/copernicus/dem/glo30/tiles/`; uniti i tile e poi riproiettato un unico DEM EPSG:3035 a 100 m prima di `r.geomorphon`; salvati output puntuali/tabellari in `data/derived/vectors/`, creati i relativi `.qml`. Interpretare quota/geomorfologia come contesto fisico, non come impatto o causalità.
 
 ## 3. QGIS e stili
 
