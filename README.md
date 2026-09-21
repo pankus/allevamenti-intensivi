@@ -248,7 +248,7 @@ cd allevamenti
 
 ```bash
 sudo apt update
-sudo apt install -y qgis qgis-plugin-grass gdal-bin
+sudo apt install -y qgis qgis-plugin-grass gdal-bin python3-venv
 qgis --version
 ogr2ogr --version
 ```
@@ -265,6 +265,19 @@ ogr2ogr --version
 ```
 
 Aprire `qgis/allevamenti.qgs` con l'app QGIS dell'ambiente o con QGIS Desktop. Su macOS/Linux, se `python3` non trova `qgis`, attivare l'ambiente Conda; su Debian/WSL2 i binding sono forniti dal pacchetto `qgis`.
+
+### Ambiente Python virtuale
+
+Dopo avere installato QGIS/GDAL con il gestore di sistema o Conda, creare e attivare un venv dalla radice del repository:
+
+```bash
+python3 -m venv --system-site-packages .venv
+source .venv/bin/activate
+python -m pip install --upgrade pip
+python -m pip install -r requirements.txt
+```
+
+`--system-site-packages` è necessario: `osgeo` e `qgis` non sono dipendenze PyPI del progetto, ma binding installati da QGIS/GDAL. In macOS eseguire questi comandi dopo `conda activate allevamenti`; in una nuova sessione riattivare prima Conda e poi `.venv`. Su Windows seguire gli stessi comandi nella shell Ubuntu di WSL2. Per uscire: `deactivate`.
 
 ### 2. Importare il punto di partenza
 

@@ -1,0 +1,2 @@
+# Nessuna dipendenza PyPI: gli script usano solo la libreria standard,
+# GDAL/OGR e i binding Python di QGIS installati dal sistema o da Conda.
