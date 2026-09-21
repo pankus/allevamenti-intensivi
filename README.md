@@ -1,8 +1,36 @@
 # Allevamenti intensivi in Italia
 
+## Indice
+
+- [Obiettivo](#obiettivo)
+- [Struttura dei dati](#struttura-dei-dati)
+- [Inventario delle fonti](#inventario-delle-fonti)
+- [Dati iniziali e controllo qualità](#dati-iniziali-e-controllo-qualità)
+- [CRS adottato](#crs-adottato)
+- [Griglia nazionale e densità dei punti](#griglia-nazionale-e-densità-dei-punti)
+- [Conteggi e densità comunali](#conteggi-e-densità-comunali)
+- [Densità kernel](#densità-kernel)
+- [Classi e transizioni CORINE Land Cover](#classi-e-transizioni-corine-land-cover)
+- [Quota e classi geomorfologiche](#quota-e-classi-geomorfologiche)
+- [Prossimità alle aree tutelate](#prossimità-alle-aree-tutelate)
+- [Primo download: confini ISTAT 2025](#primo-download-confini-istat-2025)
+- [Piano dati vettoriali](#piano-dati-vettoriali)
+- [Rete idrografica e Natura 2000](#rete-idrografica-e-natura-2000)
+- [QGIS e stili](#qgis-e-stili)
+- [Installazione e ricostruzione](#installazione-e-ricostruzione)
+  - [Clone e dipendenze](#1-clone-e-dipendenze)
+  - [Importare il punto di partenza](#2-importare-il-punto-di-partenza)
+  - [Fonti da richiedere o scaricare manualmente](#3-fonti-da-richiedere-o-scaricare-manualmente)
+  - [Ricostruire gli output](#4-ricostruire-gli-output)
+- [Artefatti finali](#artefatti-finali)
+- [Sistema grafico delle slide](#sistema-grafico-delle-slide)
+- [Handout](#handout)
+- [Riproducibilità](#riproducibilità)
+- [Estratti CORINE Italia: 1990 e 2018](#estratti-corine-italia-1990-e-2018)
+
 ## Obiettivo
 
-Prototipo riproducibile per un paper di storia dell'ambiente: mostrare come GIS e analisi spaziale permettono di passare da una mappa di localizzazioni di mega-allevamenti a risultati verificabili su concentrazione territoriale, uso/copertura del suolo e possibile pressione ambientale. I punti **non sono una misura del numero di capi, delle emissioni o della produzione**: ogni inferenza va formulata come presenza/concentrazione delle localizzazioni pubblicate.
+Prototipo riproducibile per un contributo di storia ambientale: mostrare come GIS e analisi spaziale permettono di passare da una mappa di localizzazioni di mega-allevamenti a risultati verificabili su concentrazione territoriale, uso/copertura del suolo e possibile pressione ambientale. I punti **non sono una misura del numero di capi, delle emissioni o della produzione**: ogni inferenza va formulata come presenza/concentrazione delle localizzazioni pubblicate.
 
 L'analisi tratta la distribuzione dei punti come un indicatore di presenza/concentrazione territoriale, non come stima diretta di capi, emissioni, produzione o relazioni di filiera.
 
@@ -21,6 +49,8 @@ scripts/                         # comandi riproducibili
 ```
 
 Non cancellare né sovrascrivere un file in `data/raw/`. Ogni download futuro va in `data/raw/<ente>/<dataset>/<versione>/`; il vettore importato/ritagliato va come nuovo layer in `data/processed/allevamenti.gpkg`. Conservare URL, data di download, licenza, versione e comando di trasformazione in questo README o nella [nota metodologica](docs/nota_metodologica.md).
+
+> **Avvertenza — dati Megafarm Europe.** `data/raw/megafarms/Italy points map.geojson` è incluso solo per rendere riproducibile il prototipo. La fonte è [Megafarm Europe](https://megafarms-europe.netlify.app/index.html), ma licenza, titolarità, metodologia e data dello snapshot non sono state verificate. Potrebbe quindi sussistere una violazione di copyright o di altri diritti. Il file è fornito senza alcuna licenza o autorizzazione di riuso: prima di copiarlo, ridistribuirlo, adattarlo o usare le coordinate in un nuovo prodotto, ottenere conferma scritta dal titolare della fonte.
 
 ## Inventario delle fonti
 
@@ -120,7 +150,7 @@ python3 scripts/run_downloads.py download_copernicus_dem_glo30_tiles.sh
 python3 scripts/build_dem_geomorphon.py
 ```
 
-Controlli: 2.145 punti conservati; quote mancanti 0; classi geomorfologiche mancanti 0. Il 79,0% dei punti suini e il 60,5% dei punti avicoli ricade in classe `flat`; le quote mediane sono rispettivamente 57,0 m e 27,2 m. Quota e geomorfologia descrivono il contesto fisico delle localizzazioni, non impatto, causalità o intensità produttiva.
+Controlli: 2.145 punti conservati; quote mancanti 0; classi geomorfologiche mancanti 0. Il 79,0% dei punti suini e il 60,5% dei punti avicoli ricade in classe `flat`; all'interno di questa classe le quote mediane sono rispettivamente 57,0 m e 27,2 m. Considerando tutte le classi, le mediane complessive sono 67,5 m e 62,2 m. Quota e geomorfologia descrivono il contesto fisico delle localizzazioni, non impatto, causalità o intensità produttiva.
 
 ## Prossimità alle aree tutelate
 
@@ -172,7 +202,13 @@ Entrambi sono importati in EPSG:3035 in `data/processed/allevamenti.gpkg`. La Na
 
 ### Reticolo per le distanze
 
-Il reticolo ISPRA 1:250.000 resta nel progetto come quadro nazionale e di bacino, ma non supporta misure di distanza di 500 m–1 km. Per l'analisi di prova è scelto **EU-Hydro River Network Database v1.3** (EEA/Copernicus): vettoriale, coerente su scala europea, con uso raccomandato fino a 1:30.000 e copertura italiana.
+Il reticolo ISPRA 1:250.000 resta nel progetto come quadro nazionale e di bacino, ma non supporta misure locali di precisione a 250 m–1 km. Per una dimostrazione didattica è stato comunque eseguito uno **screening nazionale esplorativo** della distanza euclidea dai corsi rappresentati: entro 250 m ricadono 89 punti suini (9,9%) e 219 avicoli (17,6%); entro 1 km 335 (37,1%) e 697 (56,1%); le mediane sono 1,56 e 0,80 km. Il reticolo generalizzato può omettere corsi minori e quindi sovrastimare le distanze. Questi valori ordinano casi da approfondire, ma non misurano connessione idrologica, contaminazione o impatto. Dettaglio e riepilogo sono in `data/derived/vectors/megafarms_water_proximity_ispra.csv` e `megafarms_water_proximity_ispra_summary.csv`, rigenerabili con:
+
+```bash
+python3 scripts/build_water_proximity.py
+```
+
+Per l'analisi di prova più accurata è scelto **EU-Hydro River Network Database v1.3** (EEA/Copernicus): vettoriale, coerente su scala europea, con uso raccomandato fino a 1:30.000 e copertura italiana.
 
 Il controllo geometrico ha respinto l'estratto GeoPackage del task CLMS `29962405257`: il layer `HYDRO/River_Net_l` contiene 95.002 record ma **zero geometrie**, perché la conversione dal formato originale GDB ha prodotto campi geometrici nulli per linee e punti. L'archivio originale, URL e checksum restano in `data/raw/copernicus/eu_hydro/v1.3_2006-2012/` per audit; i 20 layer importati sono stati rimossi da `allevamenti.gpkg` per impedirne l'uso accidentale.
 
@@ -197,18 +233,101 @@ QT_QPA_PLATFORM=offscreen PYTHONPATH=/usr/share/qgis/python \
   python3 scripts/build_qgis_project.py
 ```
 
-## Installazione
+## Installazione e ricostruzione
 
-Su Ubuntu/Debian:
+Il repository include il solo GeoJSON italiano di Megafarm Europe, con l'avvertenza di copyright sopra riportata. I file GIS scaricati, i GeoPackage analitici, raster, handout e slide sono esclusi da Git: si ricostruiscono localmente. Tutti i comandi seguenti vanno eseguiti dalla radice del clone.
+
+### 1. Clone e dipendenze
+
+```bash
+git clone https://github.com/pankus/allevamenti.git
+cd allevamenti
+```
+
+**Linux / WSL2 (scelta consigliata anche su Windows).** In PowerShell amministrativo installare WSL2 e Ubuntu con `wsl --install -d Ubuntu`, riavviare se richiesto, aprire Ubuntu e usare:
 
 ```bash
 sudo apt update
-sudo apt install qgis qgis-plugin-grass gdal-bin
+sudo apt install -y qgis qgis-plugin-grass gdal-bin
 qgis --version
 ogr2ogr --version
 ```
 
-Il progetto e le esportazioni sono stati validati con QGIS 4.2.2, GDAL 3.13 e GRASS GIS 8.4.2. Per eseguire gli script QGIS servono i binding Python della stessa distribuzione; il file `.qgs` già incluso può essere aperto senza eseguire Python.
+Tenere il clone nel filesystem Linux (per esempio `~/src/allevamenti`), non in `/mnt/c/`, per evitare lentezza e problemi di permessi. Per aprire interattivamente il progetto da Windows, installare anche QGIS Desktop dal sito ufficiale; gli script si eseguono in WSL2.
+
+**macOS.** Installare [Miniforge](https://github.com/conda-forge/miniforge), quindi in Terminale:
+
+```bash
+conda create -n allevamenti -c conda-forge python=3.12 qgis gdal grass
+conda activate allevamenti
+qgis --version
+ogr2ogr --version
+```
+
+Aprire `qgis/allevamenti.qgs` con l'app QGIS dell'ambiente o con QGIS Desktop. Su macOS/Linux, se `python3` non trova `qgis`, attivare l'ambiente Conda; su Debian/WSL2 i binding sono forniti dal pacchetto `qgis`.
+
+### 2. Importare il punto di partenza
+
+```bash
+mkdir -p data/processed
+ogr2ogr -f GPKG data/processed/allevamenti.gpkg \
+  'data/raw/megafarms/Italy points map.geojson' \
+  -nln megafarms_italy_points -nlt POINT -s_srs EPSG:4326 -t_srs EPSG:3035
+```
+
+Poi scaricare e importare le fonti che non richiedono credenziali:
+
+```bash
+python3 scripts/run_downloads.py --check \
+  download_istat_confini_2025.sh download_ispra_rete_idrografica.sh \
+  download_mase_euap_2010.sh download_mase_natura2000_2025.sh
+python3 scripts/run_downloads.py \
+  download_istat_confini_2025.sh download_ispra_rete_idrografica.sh \
+  download_mase_euap_2010.sh download_mase_natura2000_2025.sh
+python3 scripts/build_valid_points.py
+```
+
+`build_valid_points.py` crea `megafarms_italy_points_valid` ed esclude il solo record sorgente `[0,0]`, che dopo la trasformazione EPSG:3035 ha coordinata nord negativa.
+
+`download_mase_natura2000_2025.sh` non richiede token, ma i dati MASE Natura 2000 hanno condizioni restrittive: conservarli soltanto in locale e non ridistribuire vettori o artefatti che li incorporano senza autorizzazione.
+
+### 3. Fonti da richiedere o scaricare manualmente
+
+- **CORINE Land Cover 1990 e 2018 (obbligatorio per le transizioni CLC):** richiede una service key personale CLMS. Salvare il JSON ricevuto in `.secrets/clms-service-key.json`, creare `.env` con la sola riga `CLMS_SERVICE_KEY_FILE=.secrets/clms-service-key.json`, poi eseguire `python3 scripts/run_downloads.py download_copernicus_clc_italy.sh`. CLMS invia per e-mail il collegamento ai due estratti: scaricare i GeoPackage in `data/raw/copernicus/clc/1990/` e `data/raw/copernicus/clc/2018/`, quindi eseguire `scripts/import_copernicus_clc_italy.sh`.
+- **Copernicus DEM GLO-30 (obbligatorio per quota e geomorphon):** non richiede credenziali, ma va scaricato dopo avere creato il layer di punti validi al passo successivo. Lo script scarica solo i tile necessari.
+- **EU-Hydro:** richiede la stessa service key CLMS e un task di estrazione completato; non è necessario per gli output correnti. Il task storico `10074359711` può essere raccolto con `scripts/collect_copernicus_euhydro_italy.sh` solo quando disponibile.
+
+Non inserire mai la service key, token, username o password in Git, comandi copiati in issue o log. `.env` e `.secrets/` sono ignorati.
+
+### 4. Ricostruire gli output
+
+Eseguire nell'ordine:
+
+```bash
+python3 scripts/build_grid_density.py
+python3 scripts/build_municipality_density.py
+python3 scripts/build_kernel_density.py
+python3 scripts/download_copernicus_dem_glo30_tiles.sh
+python3 scripts/build_dem_geomorphon.py
+python3 scripts/build_protected_areas_proximity.py
+python3 scripts/build_water_proximity.py
+python3 scripts/import_copernicus_clc_italy.sh
+python3 scripts/build_clc_transitions.py
+```
+
+Dopo che tutti i layer richiesti sono disponibili, ricreare progetto QGIS, tabelle e figure:
+
+```bash
+QT_QPA_PLATFORM=offscreen PYTHONPATH=/usr/share/qgis/python \
+  python3 scripts/build_qgis_project.py
+QT_QPA_PLATFORM=offscreen PYTHONPATH=/usr/share/qgis/python \
+  python3 scripts/build_final_outputs.py
+python3 scripts/build_slides.py
+```
+
+Su macOS con Conda omettere `PYTHONPATH=/usr/share/qgis/python`; se l'esecuzione senza interfaccia non funziona, usare `QT_QPA_PLATFORM=offscreen python3 ...`.
+
+Il progetto `qgis/allevamenti.qgs` usa percorsi relativi: può essere aperto dopo la ricostruzione dei dati locali.
 
 ## Artefatti finali
 
@@ -235,7 +354,7 @@ Una riga per combinazione categoria animale × fonte di tutela (`natura2000` o `
 
 ### `table_03_top_municipalities.csv` — graduatorie comunali
 
-Contiene i primi dieci comuni per `point_count`, separatamente per specie. `rank_by_point_count` è quindi una graduatoria per conteggio, non per densità; `density_km2` aggiunge il rapporto con l'area comunale e può cambiare molto con dimensione e forma del comune.
+Contiene i primi dieci comuni per `point_count`, separatamente per specie, con provincia e regione ISTAT 2025. `rank_by_point_count` è quindi una graduatoria per conteggio, non per densità; `density_km2` aggiunge il rapporto con l'area comunale e può cambiare molto con dimensione e forma del comune.
 
 **Grafico consigliato:** due bar chart orizzontali, uno per specie, ordinati per `point_count` e con la stessa scala. Se si vuole discutere l'effetto dell'area, aggiungere uno scatter plot `point_count` × `density_km2` con etichette dei comuni, invece di usare un doppio asse. Presentare sempre la graduatoria insieme alla mappa e ricordare il MAUP: i confini ISTAT 2025 influenzano conteggi e densità.
 
@@ -244,6 +363,51 @@ Contiene i primi dieci comuni per `point_count`, separatamente per specie. `rank
 Aggrega i punti per macroclasse CLC 1990 (`clc_level1_1990`) e 2018 (`clc_level1_2018`), separatamente per specie. `share_percent` è la quota sul totale della specie. Questa tabella usa il **primo livello** CLC; perciò non deve riprodurre necessariamente i 65 cambiamenti suini e 179 avicoli di `table_01_summary.csv`, calcolati al terzo livello: una transizione può cambiare sottoclasse restando nella stessa macroclasse.
 
 **Grafico consigliato:** una heatmap di transizione per specie, con classe 1990 sulle righe, classe 2018 sulle colonne e colore proporzionale a `share_percent`; rende subito distinguibili permanenze sulla diagonale e cambiamenti fuori diagonale. Un diagramma alluvionale/Sankey può essere usato come visualizzazione narrativa secondaria, ma i flussi minori rischiano di scomparire dietro la prevalenza delle superfici agricole. Le transizioni riguardano il contesto dei punti oggi noti, non la storia o l'effetto causale degli allevamenti.
+
+## Sistema grafico delle slide
+
+Le slide sono in formato **16:9, 1920 × 1080 px** e vengono generate come SVG modificabile, PNG da proiezione e PDF. Il sistema privilegia la lettura a distanza e un solo messaggio per slide:
+
+- sfondo carta calda `#F4F0E6`, testo verde scuro `#173F35`, testo secondario `#62756D`;
+- arancione `#D65F32` riservato a cambiamenti, valori da evidenziare e soprattitoli; verde salvia `#CBD7C8` per stabilità o contesto;
+- carattere `Noto Sans`, con fallback Arial/sans-serif; titoli 56 px, dati principali 42–54 px, testo almeno 20 px, fonti 16 px;
+- margine esterno 110 px, allineamento a sinistra, separatori sottili `#CED5CC`, niente ombre o decorazioni non informative;
+- titolo formulato come risultato, metodo in una riga, grafico centrale, interpretazione e limite esplicito in basso;
+- confronti mostrati sulla stessa scala; colori accompagnati da etichette e valori, mai usati come unico canale informativo;
+- ogni gruppo analitico inizia con una slide “Dati di partenza”, che mostra un estratto della tabella e formula la domanda a cui rispondono le slide successive;
+- ogni slide di sintesi riserva il margine destro a “Fonti dati”, indicando per ogni fonte sia il nome sia la natura del dato;
+- quando compare un metodo, lo stesso margine contiene “Tecnica”, con definizione in linguaggio non specialistico e parametri decisivi. La regola vale anche per future tecniche, per esempio densità kernel o classificazione geomorfologica semiautomatica.
+
+La sequenza corrente contiene 22 slide:
+
+1. spiegazione di CORINE Land Cover con il punto reale `source_fid=105`, classificato `211` nel 1990 e `121` nel 2018; i riquadri sono schemi, non estratti cartografici;
+2–4. estratto e risultati delle transizioni CLC;
+5–7. estratto del riepilogo generale, diffusione e confronto tra griglia, comuni e densità kernel;
+8–10. estratto delle prossimità, Natura 2000 ed EUAP;
+11–14. estratto delle graduatorie comunali, graduatorie per specie e confronto conteggio–densità;
+15–17. estratto geomorfologico, risultati `r.geomorphon` e integrazione descrittiva di forma del terreno, CLC 2018 e quota;
+18–19. metodo e risultato parziale dello screening idrologico sul reticolo ISPRA;
+20–22. distribuzione nazionale e mappe KDE degli hotspot suini e avicoli, ricavate dalle figure QGIS validate.
+
+Le slide “Dati di partenza” leggono i CSV in `outputs/tables/` o, per la geomorfologia, `megafarms_dem_geomorphon_summary.csv`; tutte le sintesi sono calcolate nello stesso script. L'incrocio finale mostra che il 69,3% dei punti suini e il 52,0% di quelli avicoli ricade insieme in superfici agricole CLC 2018 e classe geomorfologica `flat`; le quote mediane complessive sono 67,5 e 62,2 m. È un risultato descrittivo. Le localizzazioni non rappresentano capi, estensione degli impianti, produzione o emissioni: per valutare effetti su occupazione del suolo, produzione agricola o inquinamento servono impronte edilizie, capacità produttiva e indicatori ambientali o agricoli osservati nel tempo. Lo screening idrologico ordina casi per prossimità e possibile connessione topografica, ma non stima contaminanti; le distanze fini attendono un reticolo EU-Hydro valido perché il reticolo ISPRA 1:250.000 è solo contestuale. Le soglie di prossimità non sono fasce normative; le transizioni CLC non dimostrano presenza storica o causalità.
+
+Per rigenerare i dati idrologici esplorativi e tutte le slide:
+
+```bash
+python3 scripts/build_water_proximity.py
+python3 scripts/build_slides.py
+```
+
+## Handout
+
+L'handout accademico-didattico è disponibile in `outputs/handout/` come sorgente Markdown, pagina HTML e PDF A4. Presenta fonti, metodi, risultati, glossario e limiti interpretativi; qualifica le elaborazioni come produttrici di ipotesi territoriali da validare con dati più dettagliati e ricerca storica, sociale ed economica. Il Markdown è la fonte editoriale; HTML e PDF si rigenerano con:
+
+```bash
+pandoc outputs/handout/handout.md --standalone \
+  --metadata pagetitle='Dai punti alle ipotesi' \
+  --css handout.css -o outputs/handout/handout.html
+weasyprint outputs/handout/handout.html outputs/handout/handout.pdf
+```
 
 A QGIS chiuso, tutti gli artefatti finali si rigenerano con:
 

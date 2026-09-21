@@ -1,21 +1,21 @@
-animal,rank_by_point_count,municipality_code,municipality,point_count,density_km2
-Pigs,1,017125,Orzinuovi,13,0.2714
-Pigs,2,020031,Marcaria,11,0.1225
-Pigs,3,017088,Leno,10,0.1710
-Pigs,4,020026,Goito,9,0.1141
-Pigs,5,020053,Roverbella,9,0.1429
-Pigs,6,019025,Castelleone,8,0.1773
-Pigs,7,017020,Borgo San Giacomo,7,0.2369
-Pigs,8,017113,Montichiari,7,0.0857
-Pigs,9,020021,Curtatone,7,0.1037
-Pigs,10,004059,Cavallermaggiore,6,0.1162
-Poultry,1,040012,Forlì,28,0.1228
-Poultry,2,023040,Isola della Scala,25,0.3579
-Poultry,3,040007,Cesena,23,0.0923
-Poultry,4,023038,Grezzana,17,0.3434
-Poultry,5,023065,Roverchiara,14,0.7126
-Poultry,6,040004,Borghi,13,0.4304
-Poultry,7,023089,Valeggio sul Mincio,11,0.1719
-Poultry,8,023091,Verona,11,0.0553
-Poultry,9,040019,Meldola,10,0.1265
-Poultry,10,020053,Roverbella,9,0.1429
+animal,rank_by_point_count,municipality_code,municipality,province,region,point_count,density_km2
+Pigs,1,017125,Orzinuovi,Brescia,Lombardia,13,0.2714
+Pigs,2,020031,Marcaria,Mantova,Lombardia,11,0.1225
+Pigs,3,017088,Leno,Brescia,Lombardia,10,0.1710
+Pigs,4,020026,Goito,Mantova,Lombardia,9,0.1141
+Pigs,5,020053,Roverbella,Mantova,Lombardia,9,0.1429
+Pigs,6,019025,Castelleone,Cremona,Lombardia,8,0.1773
+Pigs,7,017020,Borgo San Giacomo,Brescia,Lombardia,7,0.2369
+Pigs,8,017113,Montichiari,Brescia,Lombardia,7,0.0857
+Pigs,9,020021,Curtatone,Mantova,Lombardia,7,0.1037
+Pigs,10,004059,Cavallermaggiore,Cuneo,Piemonte,6,0.1162
+Poultry,1,040012,Forlì,Forli'-Cesena,Emilia-Romagna,28,0.1228
+Poultry,2,023040,Isola della Scala,Verona,Veneto,25,0.3579
+Poultry,3,040007,Cesena,Forli'-Cesena,Emilia-Romagna,23,0.0923
+Poultry,4,023038,Grezzana,Verona,Veneto,17,0.3434
+Poultry,5,023065,Roverchiara,Verona,Veneto,14,0.7126
+Poultry,6,040004,Borghi,Forli'-Cesena,Emilia-Romagna,13,0.4304
+Poultry,7,023089,Valeggio sul Mincio,Verona,Veneto,11,0.1719
+Poultry,8,023091,Verona,Verona,Veneto,11,0.0553
+Poultry,9,040019,Meldola,Forli'-Cesena,Emilia-Romagna,10,0.1265
+Poultry,10,020053,Roverbella,Mantova,Lombardia,9,0.1429

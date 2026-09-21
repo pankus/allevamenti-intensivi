@@ -16,6 +16,41 @@
 - [ ] Solo dopo il download EU-Hydro: calcolare distanze dai corsi d'acqua. Escludere i risultati se il dettaglio della sorgente non regge la soglia scelta.
 - [x] Usare Copernicus DEM GLO-30 per attribuire quota e classe geomorfologica ai punti degli allevamenti. Conservati i tile originali in `data/raw/copernicus/dem/glo30/tiles/`; uniti i tile e poi riproiettato un unico DEM EPSG:3035 a 100 m prima di `r.geomorphon`; salvati output puntuali/tabellari in `data/derived/vectors/`, creati i relativi `.qml`. Interpretare quota/geomorfologia come contesto fisico, non come impatto o causalità.
 
+### 2.1 Domande storiche e passaggi successivi
+
+**Domanda storica principale**
+
+> La geografia attuale dei mega-allevamenti è il risultato di una specializzazione territoriale di lungo periodo oppure di una riconfigurazione recente della zootecnia italiana?
+
+Le localizzazioni Megafarm non sono datate: con i dati attuali questa domanda non è ancora pienamente verificabile.
+
+**Domanda alla quale possiamo già rispondere**
+
+> Quali paesaggi italiani ospitano oggi le maggiori concentrazioni di mega-allevamenti e come sono cambiati, tra 1990 e 2018, i contesti territoriali nei quali queste localizzazioni ricadono?
+
+Le analisi già prodotte permettono di descrivere:
+
+- la diversa geografia di suini e pollame;
+- la concentrazione rispetto a pianure, basse quote e superfici agricole;
+- le transizioni CLC nei luoghi in cui ricadono i punti attuali;
+- la prossimità ad aree tutelate e, con i limiti documentati, ai corsi d'acqua;
+- i territori che emergono stabilmente usando comuni, griglia regolare e KDE.
+
+Il risultato va formulato come **selettività e territorializzazione** delle localizzazioni attuali: gli allevamenti non sono distribuiti casualmente, ma ricorrono in determinati paesaggi. Non è invece possibile affermare che abbiano causato le trasformazioni CLC o misurare produzione, emissioni e impatto ambientale.
+
+**Ipotesi storica da verificare**
+
+> L'intensificazione non ha semplicemente aumentato la produzione, ma ha concentrato progressivamente aziende e possibili pressioni territoriali in pochi distretti specializzati.
+
+**Passaggi successivi**
+
+- [ ] Reperire una serie storica dei censimenti agricoli ISTAT, dagli anni Sessanta in avanti, con numero di aziende e capi per specie alla scala territoriale più dettagliata e confrontabile disponibile.
+- [ ] Verificare continuità di definizioni, confini amministrativi e unità di rilevazione prima di costruire confronti temporali.
+- [ ] Ricostruire per provincia o comune la variazione del numero di aziende, dei capi e della dimensione media aziendale, tenendo distinti suini e pollame.
+- [ ] Confrontare le traiettorie storiche con gli hotspot Megafarm attuali per distinguere persistenza di antichi distretti, concentrazione recente e aree in declino.
+- [ ] Selezionare uno o due casi di studio emersi dal confronto quantitativo e verificarli con fonti storiche locali, pianificazione, fotografie aeree e documentazione d'impresa o amministrativa.
+- [ ] Usare l'analisi digitale per scegliere territori, periodi e fonti da approfondire, non per retrodatare automaticamente le localizzazioni attuali.
+
 ## 3. QGIS e stili
 
 - [x] Aggiungere al progetto QGIS punti, confini ISTAT, idrografia ISPRA, EUAP, Natura 2000, CLC e output derivati. Dividi in gruppi in modo organico sulla base del processo realizzato

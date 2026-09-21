@@ -235,6 +235,15 @@ def build_layouts(project):
         )
 
 
+def sanitize_project_file():
+    """Remove local identity and make layout layer paths portable."""
+    project_xml = PROJECT_FILE.read_text()
+    project_xml = re.sub(r'\s+saveUserFull="[^"]*"', '', project_xml)
+    project_xml = re.sub(r'\s+saveUser="[^"]*"', '', project_xml)
+    project_xml = re.sub(r'<author>[^<]*</author>', '<author/>', project_xml)
+    PROJECT_FILE.write_text(project_xml.replace(f'{ROOT.as_posix()}/', '../'))
+
+
 def prune_duplicate_project_styles():
     attachments = PROJECT_FILE.with_name(f"{PROJECT_FILE.stem}_attachments.zip")
     project_xml = PROJECT_FILE.read_text()
@@ -264,6 +273,7 @@ def main():
 
     project.setFileName(str(PROJECT_FILE))
     project.setTitle("Allevamenti intensivi in Italia")
+    project.metadata().setAuthor("")
     project.setCrs(QgsCoordinateReferenceSystem("EPSG:3035"))
     project.writeEntry("Paths", "/Absolute", False)
     project.layerTreeRoot().clear()
@@ -282,6 +292,7 @@ def main():
         raise RuntimeError(f"Impossibile scrivere {PROJECT_FILE}")
     app.exitQgis()
     prune_duplicate_project_styles()
+    sanitize_project_file()
     print(f"Aggiornato {PROJECT_FILE}: {expected} layer in {len(GROUPS)} gruppi")
 
 

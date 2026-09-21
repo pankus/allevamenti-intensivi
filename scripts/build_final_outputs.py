@@ -55,13 +55,16 @@ def build_tables(project):
         ))
 
         rows = database.execute(
-            f"SELECT pro_com_t, comune, point_count, density_km2 "
-            f"FROM megafarms_municipality_2025_{key} "
-            f"WHERE point_count>0 ORDER BY point_count DESC, pro_com_t LIMIT 10"
+            f"SELECT m.pro_com_t, m.comune, p.DEN_PROV, r.DEN_REG, "
+            f"m.point_count, m.density_km2 "
+            f"FROM megafarms_municipality_2025_{key} m "
+            f"JOIN istat_province_2025 p ON p.COD_PROV=m.cod_prov "
+            f"JOIN istat_regioni_2025 r ON r.COD_REG=m.cod_reg "
+            f"WHERE m.point_count>0 ORDER BY m.point_count DESC, m.pro_com_t LIMIT 10"
         )
         top_municipalities.extend(
-            (animal, rank, code, municipality, count, f"{density:.4f}")
-            for rank, (code, municipality, count, density) in enumerate(rows, 1)
+            (animal, rank, code, municipality, province, region, count, f"{density:.4f}")
+            for rank, (code, municipality, province, region, count, density) in enumerate(rows, 1)
         )
 
         rows = database.execute(
@@ -97,7 +100,7 @@ def build_tables(project):
     write_csv(
         "table_03_top_municipalities.csv",
         ("animal", "rank_by_point_count", "municipality_code", "municipality",
-         "point_count", "density_km2"),
+         "province", "region", "point_count", "density_km2"),
         top_municipalities,
     )
     write_csv(

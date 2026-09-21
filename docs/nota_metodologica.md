@@ -20,7 +20,7 @@ Tutte le misure nazionali sono calcolate in ETRS89 / LAEA Europe (`EPSG:3035`), 
 3. **KDE:** kernel quartico senza pesi, bandwidth 20 km, cella 2 km, ritaglio sul territorio nazionale. Il confronto esplorativo ha incluso bandwidth di 10 e 30 km.
 4. **CLC:** attribuzione delle classi di terzo livello 1990 e 2018 ai punti attuali. Una lacuna costiera a Rosolina è risolta con la classe più vicina entro 200 m (137,84 m).
 5. **Aree protette:** Natura 2000 ed EUAP sono misurate separatamente, senza dissolverle o unirle. Le soglie di 1 e 5 km sono descrittive e non normative.
-6. **Idrografia:** il reticolo ISPRA 1:250.000 è usato soltanto come contesto cartografico. Le distanze restano sospese fino alla validazione dell'estratto nativo EU-Hydro.
+6. **Idrografia:** il reticolo ISPRA 1:250.000 è usato per uno screening nazionale esplorativo della distanza euclidea, non per misure locali di precisione. L'analisi più accurata resta sospesa fino alla validazione dell'estratto nativo EU-Hydro.
 
 I comandi, i controlli numerici e gli output sono descritti nel [`README.md`](../README.md); gli script sono in [`scripts/`](../scripts/).
 
@@ -31,7 +31,7 @@ I comandi, i controlli numerici e gli output sono descritti nel [`README.md`](..
 | Megafarm Europe | snapshot non datato; file locale con timestamp 18 agosto 2026 | distribuzione corrente presunta, non serie storica |
 | CLC | 1990 e 2018 | contesto del suolo presso punti oggi noti; nessuna prova che i siti esistessero nei due anni |
 | ISTAT | confini al 1° gennaio 2025 | aggregazione contemporanea; soggetta a MAUP e variazioni amministrative |
-| ISPRA reticolo | creazione indicata 2004, scala 1:250.000 | quadro nazionale, non prossimità a scala locale |
+| ISPRA reticolo | creazione indicata 2004, scala 1:250.000 | screening nazionale esplorativo; non prossimità locale di precisione |
 | EUAP | VI elenco, 2010 | strato storico di tutela, non perimetrazione attuale |
 | Natura 2000 | trasmissione dicembre 2025, banca dati ufficiale gennaio 2026 | tutela recente, non retroproiettabile al 1990 o 2018 |
 | EU-Hydro v1.3 | fonti soprattutto 2006–2012 | analisi non ancora eseguita; infrastruttura di riferimento, non fotografia attuale |
@@ -57,4 +57,4 @@ CLC descrive **contesto**, non causalità. La vicinanza alle aree protette descr
 
 ## Stato della ricerca
 
-I risultati disponibili costituiscono un nucleo dimostrativo riproducibile per l'intervento. L'unica analisi pianificata ancora bloccata è la distanza da EU-Hydro: il primo estratto è stato respinto perché privo di geometrie lineari e il task GDB sostitutivo `10074359711` è ancora in coda all'11 settembre 2026. Nessun risultato idrografico di prossimità deve essere presentato finché la sorgente non supera il controllo geometrico e di scala.
+I risultati disponibili costituiscono un nucleo dimostrativo riproducibile per l'intervento. Sul reticolo ISPRA è disponibile uno screening idrografico nazionale dichiaratamente esplorativo: entro 1 km dai corsi rappresentati ricadono il 37,1% dei punti suini e il 56,1% di quelli avicoli; il dato non misura contaminazione o connessione di deflusso e può sovrastimare le distanze perché il reticolo omette corsi minori. L'analisi di prossimità più accurata su EU-Hydro resta bloccata: il primo estratto è stato respinto perché privo di geometrie lineari e il task GDB sostitutivo `10074359711` è ancora in coda all'11 settembre 2026. I risultati ISPRA non devono essere presentati come sostituti della futura analisi EU-Hydro.

@@ -10,6 +10,9 @@ __pycache__/
 .venv/
 
 # Dati GIS scaricati o rigenerabili; URL, checksum e JSON di richiesta restano versionabili
+# Eccezione deliberata: data/raw/megafarms/Italy points map.geojson (licenza sconosciuta; vedi README).
+geodata/
+data/raw_empty/
 data/raw/**/extracted/
 data/raw/**/*.gpkg
 data/raw/**/*.zip
@@ -18,6 +21,11 @@ data/raw/**/*.tiff
 data/processed/*
 data/derived/vectors/*
 data/derived/rasters/*
+
+# Output editoriali rigenerabili e copie locali di progetto QGIS
+outputs/handout/
+outputs/slides/
+qgis/allevamenti_stable*
 
 # File temporanei/ausiliari GIS
 data/**/*.gpkg-*
